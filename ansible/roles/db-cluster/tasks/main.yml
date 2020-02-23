@@ -1,0 +1,75 @@
+---
+- name: Set Timezone
+  timezone:
+    name: Africa/Nairobi
+
+- name: Disable SELinux
+  selinux:
+    state: disabled
+
+- name: Disable NetworkManager
+  service:
+    name: NetworkManager
+    state: stopped
+    enabled: no
+
+- name: Install Epel repository
+  package:
+    name: epel-release
+    state: present
+
+- name: Update all system packages
+  yum:
+    name: '*'
+    state: latest
+
+- name: Install Basic Packages
+  package:
+    name: '{{ item }}'
+    state: present
+    update_cache: yes
+  with_items: "{{ basic_packages }}"
+
+- name: Add Percona YUM repository
+  yum:
+    name: '{{ percona_repo_url }}'
+    state: present
+
+- name: Install Percona Packages
+  package:
+    name: '{{ item }}'
+    state: present
+    update_cache: yes
+  with_items: "{{ percona_packages }}"
+
+- name: Copy Telegraf repository
+  template:
+    src: influxdb.repo.j2
+    dest: /etc/yum.repos.d/influxdb.repo
+
+- name: Install telegraf
+  package:
+    name: telegraf
+    state: present
+
+#- name: Copy telegraf configuration file
+#  template:
+#    src: telegraf.conf.j2
+#    dest: /etc/telegraf/telegraf.conf
+#    owner: telegraf
+#    group: telegraf
+#    mode: 0640
+
+
+- name: Disable the zeroconf route
+  lineinfile:
+    path: /etc/sysconfig/network
+    line: 'NOZEROCONF=yes'
+
+- name: Tune sysctl
+  lineinfile:
+    path: /etc/sysctl.conf
+    line: 'vm.swappiness = 1'
+
+- name: Reload sysctl
+  command: sysctl -p

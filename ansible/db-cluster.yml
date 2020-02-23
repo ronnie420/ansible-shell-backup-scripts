@@ -1,0 +1,8 @@
+---
+- name: Run DB Cluster setup role
+  become: yes
+  remote_user: root
+  become_method: sudo
+  hosts: db-cluster
+  roles:
+    - db-cluster

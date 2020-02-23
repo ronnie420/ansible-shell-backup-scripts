@@ -1,0 +1,28 @@
+---
+basic_packages:
+  - lvm2
+    vim
+    bash-completion
+    wget
+    curl
+    telnet
+    cloud-init
+    cloud-utils-growpart
+    acpid
+    php-mysql
+    MySQL-python
+    cronie
+    cronie-anacron
+    crontabs
+    nagios-plugins-all
+    sysstat
+    webalizer
+    redhat-lsb
+    mysql-connector-odbc
+
+percona_repo_url: https://repo.percona.com/yum/percona-release-latest.noarch.rpm
+percona_packages:
+  - percona-xtradb-cluster-57
+  - percona-xtrabackup
+  - percona-toolkit
+

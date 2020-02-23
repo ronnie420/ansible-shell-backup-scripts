@@ -1,0 +1,52 @@
+### MANAGED BY telegraf ANSIBLE ROLE ###
+
+[global_tags]
+
+
+# Configuration for telegraf agent
+[agent]
+    interval = "10s"
+    debug = false
+    hostname = ""
+    round_interval = true
+    flush_interval = "10s"
+    flush_jitter = "0s"
+    collection_jitter = "0s"
+    metric_batch_size = 1000
+    metric_buffer_limit = 10000
+    quiet = false
+    logfile = ""
+    omit_hostname = false
+
+###############################################################################
+#                                  OUTPUTS                                    #
+###############################################################################
+
+[[outputs.influxdb]]
+    urls = ["http://10.245.3.249:8086"]
+    database = "hub-prod-eadc"
+    timeout = "0s"
+    username = "monitoring"
+    password = "Aiv2ahdaen6a"
+    retention_policy = "53w"
+
+###############################################################################
+#                                  INPUTS                                     #
+###############################################################################
+
+[[inputs.cpu]]
+    percpu = true
+    totalcpu = true
+    collect_cpu_time = false
+    report_active = false
+[[inputs.disk]]
+    ignore_fs = ["tmpfs", "devtmpfs", "devfs"]
+[[inputs.io]]
+[[inputs.mem]]
+[[inputs.net]]
+[[inputs.system]]
+[[inputs.swap]]
+[[inputs.netstat]]
+[[inputs.processes]]
+[[inputs.kernel]]
+
